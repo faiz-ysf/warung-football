@@ -32,4 +32,19 @@ class News(models.Model):
         self.save()
 
 
-# Create your models here.
+class Product(models.Model):
+    # NOTE: ini adalah bentuk implementasi saya!
+    PRODUCT_OPTIONS: list[tuple[str, str]] = [
+        ('shoes', 'Shoes'),
+        ('men sportwear', 'Men Sportwear'),
+        ('women sportwear', 'Women Sportwear'),
+        ('kids sportwear', 'Kids sportwear')
+    ];  
+
+    name: str = models.CharField(max_length=255);
+    price: int = models.IntegerField(verbose_name="Age");
+    descriptions: str = models.TextField();
+    thumbnail: str = models.URLField(blank=True, null=True);
+    category: str  = models.CharField(max_length=20);
+    is_featured: bool = models.BooleanField(default=False); 
+
