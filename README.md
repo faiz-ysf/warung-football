@@ -15,7 +15,7 @@ Pada `settings.py`, kita bisa melakukan beberapa hal:
 ## **Bagaimana cara kerja migrasi database di Django?**
 Prosesnya bekerja dalam dua tahap utama:
 1. `makemigrations`
-Django membaca perubahan yang kamu buat di models.py (misalnya menambah field, menghapus field, membuat model baru).Lalu membuat file migrasi di folder migrations/ (misalnya 0001_initial.py, 0002_add_field.py). File migrasi ini berisi instruksi Python yang menjelaskan bagaimana database harus diubah (misalnya CreateModel, AddField, AlterField).
+Django membaca perubahan yang kamu buat di models.py (misalnya menambah field, menghapus field, membuat model baru).Lalu membuat file migrasi di folder `migrations/` (misalnya `0001_initial.py`, `0002_add_field.py`). File migrasi ini berisi instruksi Python yang menjelaskan bagaimana database harus diubah (misalnya `CreateModel`, `AddField`, `AlterField`).
 2. `migrate`
 Django mengeksekusi file migrasi tersebut ke database, dan menyimpan catatan migrasi yang sudah dijalankan di tabel khusus bernama `django_migrations`, sehingga tidak dijalankan dua kali.
 
