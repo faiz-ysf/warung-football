@@ -7,11 +7,11 @@
 > ![Proses request client](bagan.png)
 
 ## **Jelaskan peran settings.py dalam proyek Django!**
-Pada settings.py, kita bisa melakukan beberapa hal:
-	 /n1. Menkonfigurasi website apakah dalam mode debugging atau production
-	 /n2. Membantu menghubungi main page dengan database
-	 /n3. Menambahkan aplikasi baru yang nanti bisa kita hubungi dengan direktori utama website kita (yaitu warung_football dalam konteks ini)
-> Kesimpulan yang bisa didapatkan adalah settings.py berguna sebagai layar belakang dibalik tampilan halaman utama, alamat yang ingin dikirim informasinya, dan penghubung aplikasi kita.
+Pada `settings.py`, kita bisa melakukan beberapa hal:
+1. Menkonfigurasi website apakah dalam mode debugging atau production
+2. Membantu menghubungi main page dengan database
+3. Menambahkan aplikasi baru yang nanti bisa kita hubungi dengan direktori utama website kita (yaitu warung_football dalam konteks ini)
+> Kesimpulan yang bisa didapatkan adalah `settings.py` berguna sebagai layar belakang dibalik tampilan halaman utama, alamat yang ingin dikirim informasinya, dan penghubung aplikasi kita.
 ## **Bagaimana cara kerja migrasi database di Django?**
 
 ## **Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?**
