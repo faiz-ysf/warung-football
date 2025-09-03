@@ -1,5 +1,5 @@
 # Q & A
----
+
 ## **Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step** 
 > Pertama, yang saya lakukan adalah melihat kembali tutorial 0 dan 1. Lalu, saya membuat note yang berisi step-by-step cara seperti memulai proyek Django, men-deploy proyek saya ke github dan PWS, dan memastikan menghindari kesalahan fatal dengan melihat troubleshoot section pada page tutorial sebelumnya.
 
@@ -13,6 +13,11 @@ Pada `settings.py`, kita bisa melakukan beberapa hal:
 3. Menambahkan aplikasi baru yang nanti bisa kita hubungi dengan direktori utama website kita (yaitu warung_football dalam konteks ini)
 > Kesimpulan yang bisa didapatkan adalah `settings.py` berguna sebagai layar belakang dibalik tampilan halaman utama, alamat yang ingin dikirim informasinya, dan penghubung aplikasi kita.
 ## **Bagaimana cara kerja migrasi database di Django?**
+Prosesnya bekerja dalam dua tahap utama:
+1. `makemigrations`
+Django membaca perubahan yang kamu buat di models.py (misalnya menambah field, menghapus field, membuat model baru).Lalu membuat file migrasi di folder migrations/ (misalnya 0001_initial.py, 0002_add_field.py). File migrasi ini berisi instruksi Python yang menjelaskan bagaimana database harus diubah (misalnya CreateModel, AddField, AlterField).
+2. `migrate`
+Django mengeksekusi file migrasi tersebut ke database, dan menyimpan catatan migrasi yang sudah dijalankan di tabel khusus bernama `django_migrations`, sehingga tidak dijalankan dua kali.
 
 ## **Menurut Anda, dari semua framework yang ada, mengapa framework Django dijadikan permulaan pembelajaran pengembangan perangkat lunak?**
 > framework Django ditulis dengan bahasa pemrograman Python, yang sebelumnya telah kita pelajari di semester sebelumnya. Lalu, Django bisa dibilang sangat terbuka bagi programmer pemula tidak perlu dipusingi dengan membuat __frontend__ dan __backend__ dari nol.
