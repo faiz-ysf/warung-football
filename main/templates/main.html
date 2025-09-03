@@ -6,3 +6,18 @@
 <p>{{ name }}<p>
 <h5>Class: </h5>
 <p>{{ class }}</p>
+
+
+<ul>
+    {% for article in articles %}
+        <li>
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.content }}</p>
+            <p>Category: {{ article.get_category_display }}</p>
+            <p>Views: {{ article.news_views }}</p>
+            <p>Hot? {{ article.is_news_hot }}</p>
+        </li>
+    {% empty %}
+        <li>No news yet.</li>
+    {% endfor %}
+</ul>

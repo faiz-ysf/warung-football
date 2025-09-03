@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import News
 
 def show_main(request):
     context = {
@@ -8,5 +9,10 @@ def show_main(request):
     }
 
     return render(request, "main.html", context)
+
+
+def news_list(request):
+    articles = News.objects.all().order_by('-created_at')
+    return render(request, "main.html", {"articles": articles})
 
 # Create your views here.
