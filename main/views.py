@@ -3,9 +3,9 @@ from .models import News
 
 def show_main(request):
     context = {
-        'npm' : '240123456',
-        'name': 'Haru Urara',
-        'class': 'PBP A'
+        'npm' : '2406434292',
+        'name': 'Faiz Yusuf Ridwan',
+        'class': 'PBP C'
     }
 
     return render(request, "main.html", context)
