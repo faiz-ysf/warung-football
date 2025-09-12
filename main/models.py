@@ -20,7 +20,6 @@ class Product(models.Model):
     price: int = models.IntegerField(verbose_name="Price");
     descriptions: str = models.TextField();
 
-    created_at: str = models.DateTimeField(auto_now_add=True);
     item_views: int = models.PositiveIntegerField(default=0);
     thumbnail: str = models.URLField(blank=True, null=True);
     category: str  = models.CharField(max_length=50, choices=PRODUCT_OPTIONS);

@@ -25,7 +25,6 @@
 	        {% if product.is_featured %} | <b>Featured</b>{% endif %}
 	        {% if product.is_product_trending %} | <b>Trending</b>{% endif %}
 	        | Price: Rp {{ product.price }}
-	        | <i>{{ product.created_at|date:"d M Y" }}</i>
 	        | Views: {{ product.item_views }}
 	      </p>
 	
