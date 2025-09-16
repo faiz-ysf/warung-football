@@ -1,8 +1,8 @@
 # Request XML dan JSON melalui POSTMAN
 ![description](json.png)
-
-
 ![description](xml.png)
+![description](json-by-id.png)
+![description](xml-by-id.png)
 
 ---
 
