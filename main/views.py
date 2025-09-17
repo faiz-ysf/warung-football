@@ -1,8 +1,27 @@
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core import serializers
 from .models import Product
 from .forms import ProductForm
+
+# registration/login function
+
+def register(request):
+    form = UserCreationForm()
+
+    if "request.method" == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Your account has been successfully created!')
+            return redirect('main:login')
+    context = {'form': form}
+    return render(request, 'register.html', context)
+
+
 
 def show_main(request):
     product_list = Product.objects.all();
