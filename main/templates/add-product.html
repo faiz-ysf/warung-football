@@ -1,16 +1,19 @@
 {% extends 'base.html' %} 
+{% block title %}Add Item - Warung Football{% endblock %}
+
 {% block content %}
-<h1>Add Item</h1>
+<div class="create-product">
+  <h1>Add Item</h1>
 
-<form method="POST" class="my-form">
-  {% csrf_token %}
-  <table>
-    {{ form.as_table }}
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Add Item" /></td>
-    </tr>
-  </table>
-</form>
-
+  <form method="POST" class="my-form">
+    {% csrf_token %}
+    <table>
+      {{ form.as_table }}
+      <tr>
+        <td></td>
+        <td><input type="submit" value="Add Item" class="btn" /></td>
+      </tr>
+    </table>
+  </form>
+</div>
 {% endblock %}

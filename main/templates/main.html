@@ -3,44 +3,54 @@
 {% block title %}Warung Football{% endblock %}
 
 {% block content %}
-  <a href="{% url 'main:create_product' %}">
-    <button>+ Add Product</button>
-  </a>
+<div class="main-header">
+  <h2>Welcome, {{ request.user.username }}!</h2>
+  <p>Sesi terakhir login: {{ last_login }}</p>
+  <div class="action-buttons">
+    <a href="{% url 'main:create_product' %}"><button class="btn">+ Add Product</button></a>
+    <a href="{% url 'main:logout' %}"><button class="btn">Logout</button></a>
+  </div>
+</div>
 
-  {% if not product_list %}
+<div class="filter-section">
+  <div class="filter-buttons">
+    <a href="?filter=all">
+      <button class="filter-btn {% if request.GET.filter == 'all' %}active{% endif %}">All Products</button>
+    </a>
+    <a href="?filter=my">
+      <button class="filter-btn {% if request.GET.filter == 'my' %}active{% endif %}">My Products</button>
+    </a>
+  </div>
+</div>
+
+{% if not product_list %}
+  <div class="empty-state">
     <p>Hmm, sepertinya rak ini masih kosong—untuk saat ini.</p>
-  {% else %}
-    <div class="product-grid">
-      {% for product in product_list %}
-        <div class="product-card">
-          <h2>
-            <a href="{% url 'main:show_product' product.id %}">
-              {{ product.name }}
-            </a>
-          </h2>
-          <p>
-            <b>{{ product.get_category_display }}</b>
-            {% if product.is_featured %} | <b>Featured</b>{% endif %}
-            {% if product.is_product_trending %} | <b>Trending</b>{% endif %}
-            | Price: Rp {{ product.price }}
-            | <i>{{ product.created_at|date:"d M Y H:i" }}</i>
-            | Views: {{ product.item_views }}
-          </p>
-          {% if product.thumbnail %}
-            <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="product-thumb">
-          {% endif %}
-          <p>{{ product.descriptions|truncatewords:25 }}...</p>
-
-          <div style="display:flex; gap:10px; justify-content:center; margin-top:10px;">
-            <a href="{% url 'main:show_product' product.id %}">
-              <button>View Details</button>
-            </a>
-            <a href="{% url 'main:delete_product' product.id %}">
-              <button class="delete-button">Delete</button>
-            </a>
-          </div>
+    <a href="{% url 'main:create_product' %}"><button class="btn">Add Your First Product</button></a>
+  </div>
+{% else %}
+  <div class="product-grid">
+    {% for product in product_list %}
+      <div class="product-card">
+        <h2><a href="{% url 'main:show_product' product.id %}">{{ product.name }}</a></h2>
+        <p>
+          <b>{{ product.get_category_display }}</b>
+          {% if product.is_featured %} | <b>Featured</b>{% endif %}
+          {% if product.is_product_trending %} | <b>Trending</b>{% endif %}
+          | Price: Rp {{ product.price }}
+          | <i>{{ product.created_at|date:"d M Y H:i" }}</i>
+          | Views: {{ product.item_views }}
+        </p>
+        {% if product.thumbnail %}
+          <img src="{{ product.thumbnail }}" alt="{{ product.name }} thumbnail" class="product-thumb">
+        {% endif %}
+        <p>{{ product.descriptions|truncatewords:25 }}...</p>
+        <div class="product-actions">
+          <a href="{% url 'main:show_product' product.id %}"><button class="btn">View Details</button></a>
+          <a href="{% url 'main:delete_product' product.id %}"><button class="btn delete-button">Delete</button></a>
         </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
 {% endblock %}

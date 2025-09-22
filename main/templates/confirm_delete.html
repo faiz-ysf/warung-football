@@ -1,18 +1,16 @@
 {% extends "base.html" %}
 
-{% block title %}Confirm Delete{% endblock %}
+{% block title %}Confirm Delete - Warung Football{% endblock %}
 
 {% block content %}
-<main>
-  <h1>Delete Product</h1>
-  <p>Are you sure you want to delete <b>{{ product.name }}</b>?<br>This action cannot be undone.</p>
+<h1>Delete Product</h1>
+<p>Are you sure you want to delete <b>{{ product.name }}</b>?<br>This action cannot be undone.</p>
 
-  <form method="POST" style="text-align:center; margin-top:30px;">
-    {% csrf_token %}
-    <button type="submit">Yes, delete</button>
-    <a href="{% url 'main:show_main' %}">
-      <button type="button">Cancel</button>
-    </a>
-  </form>
-</main>
+<form method="POST" class="delete-form">
+  {% csrf_token %}
+  <button type="submit" class="btn delete-button">Yes, delete</button>
+  <a href="{% url 'main:show_main' %}">
+    <button type="button" class="btn">Cancel</button>
+  </a>
+</form>
 {% endblock %}

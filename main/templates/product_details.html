@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% block title %}{{ product.name }} - Warung Football{% endblock %}
+
 {% block content %}
 <p>
   <a href="{% url 'main:show_main' %}">
-    <button>← Back to Product List</button>
+    <button class="btn">← Back to Product List</button>
   </a>
 </p>
 
@@ -17,9 +19,12 @@
 </p>
 
 {% if product.thumbnail %}
-  <img src="{{ product.thumbnail }}" alt="Product thumbnail" width="300">
-  <br /><br />
+  <img src="{{ product.thumbnail }}" alt="{{ product.name }} thumbnail" class="product-thumb" width="300">
+{% else %}
+  <p>No thumbnail available.</p>
 {% endif %}
 
 <p>{{ product.descriptions }}</p>
-{% endblock content %}
+
+<p>Sold By: {% if product.user %}{{ product.user.username }}{% else %}Unknown{% endif %}</p>
+{% endblock %}
