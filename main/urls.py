@@ -10,6 +10,7 @@ urlpatterns = [
     path("create/", views.create_product, name="create_product"),
     path("product/<uuid:id>/", views.show_product, name="show_product"),
     path("product/<uuid:id>/delete/", views.delete_product, name="delete_product",),
+	path("product/<uuid:id>/edit", views.edit_product, name='edit_product'),
 
 	# Login/Registration functions
 	path('register/', views.register, name='register'),

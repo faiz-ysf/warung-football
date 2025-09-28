@@ -1,19 +1,24 @@
-/* Color Variables - Dark Mode */
+/* ============================================
+   COLOR VARIABLES - DARK MODE
+   ============================================ */
 :root {
-  --primary-blue: #1a237e; /* Dark Indigo */
+  --primary-blue: #1a237e;
   --accent-blue: #2196f3;
-  --primary-green: #1b5e20; /* Dark Green */
+  --primary-green: #1b5e20;
   --accent-green: #4caf50;
   --primary-yellow: #fff9c4;
   --accent-yellow: #ffc107;
-  --surface-color: #2c3e50; /* Dark Slate for Surfaces */
-  --text-dark: #ecf0f1; /* Light Grey for Text */
-  --text-light: #95a5a6; /* Lighter Grey for Subtext */
+  --surface-color: #2c3e50;
+  --text-dark: #ecf0f1;
+  --text-light: #95a5a6;
   --border-color: #4a637a;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
   --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.5);
 }
 
+/* ============================================
+   BASE LAYOUT
+   ============================================ */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
@@ -49,9 +54,20 @@ main {
   box-shadow: var(--shadow);
   min-height: 500px;
   border: 1px solid var(--border-color);
+  width: 1200px; /* FIXED WIDTH - tidak responsive */
+  margin: 0 auto; /* Center */
 }
 
-/* Buttons */
+main h1 {
+  color: var(--text-dark);
+  font-size: 2.2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ============================================
+   BUTTONS & LINKS
+   ============================================ */
 button, input[type="submit"] {
   background: linear-gradient(45deg, var(--accent-blue), var(--accent-green));
   color: #ffffff;
@@ -72,6 +88,16 @@ button:hover, input[type="submit"]:hover {
   background: linear-gradient(45deg, var(--accent-green), var(--accent-blue));
 }
 
+.delete-button {
+  background: linear-gradient(45deg, #e53935, #b71c1c) !important;
+}
+
+.delete-button:hover {
+  background: linear-gradient(45deg, #b71c1c, #e53935) !important;
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
 a {
   text-decoration: none;
   color: var(--accent-blue);
@@ -82,7 +108,9 @@ a:hover {
   color: var(--accent-green);
 }
 
-/* Product Grid */
+/* ============================================
+   PRODUCT GRID & CARDS
+   ============================================ */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -141,10 +169,9 @@ a:hover {
   line-height: 1.5;
 }
 
-/* Featured/Trending badges */
 .product-card p b {
   background: var(--primary-yellow);
-  color: #2c3e50; /* Dark text on yellow background */
+  color: #2c3e50;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.85rem;
@@ -166,8 +193,22 @@ a:hover {
   transform: scale(1.02);
 }
 
-/* Forms */
+/* ============================================
+   FORMS - TABLE BASED (ALL FORMS)
+   ============================================ */
+.login, .register, .create-product {
+  width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
+.login h1, .register h1, .create-product h1 {
+  text-align: center;
+  color: var(--text-dark);
+  /* margin-bottom: 30px; */
+}
+
+/* All table forms */
 table {
   width: 100%;
   margin: 20px 0;
@@ -178,8 +219,15 @@ table td {
   vertical-align: top;
 }
 
+table label {
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+/* Input fields in all table forms */
 table input, table textarea, table select {
   width: 100%;
+  max-width: 300px;
   padding: 12px 16px;
   border: 2px solid var(--border-color);
   border-radius: 10px;
@@ -187,6 +235,7 @@ table input, table textarea, table select {
   transition: border-color 0.3s ease;
   background: #34495e;
   color: var(--text-dark);
+  box-sizing: border-box;
 }
 
 table input:focus, table textarea:focus, table select:focus {
@@ -195,45 +244,157 @@ table input:focus, table textarea:focus, table select:focus {
   box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.1);
 }
 
-table label {
-  font-weight: 600;
-  color: var(--text-dark);
+/* Special styling for all table forms */
+.login table, .register table, .create-product table {
+  width: 100%;
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 15px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+  margin: 0;
 }
 
-/* Empty state */
-main > p {
+/* Auth navigation links */
+.login > a, .register > a {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: var(--accent-blue);
+  font-weight: 600;
+}
+
+.login > a:hover, .register > a:hover {
+  color: var(--accent-green);
+}
+
+/* ============================================
+   MAIN PAGE LAYOUT IMPROVEMENTS
+   ============================================ */
+.main-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.main-header h2 {
+  color: var(--text-dark);
+  font-size: 1.8rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.filter-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Filter buttons as actual button elements */
+.filter-btn {
+  background: var(--surface-color);
+  border: 2px solid var(--accent-blue);
+  border-radius: 25px;
+  color: var(--text-dark);
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filter-btn:hover, .filter-btn.active {
+  background: var(--accent-blue);
+  color: #fff;
+  border-color: var(--accent-blue);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* Remove link styling for filter buttons */
+.filter-buttons a {
+  text-decoration: none;
+}
+
+/* ============================================
+   EMPTY STATE & MESSAGES
+   ============================================ */
+.empty-state {
   text-align: center;
   font-size: 1.2rem;
   color: var(--text-light);
   background: #34495e;
-  padding: 30px;
+  padding: 40px;
   border-radius: 15px;
   border: 2px dashed var(--accent-green);
   margin: 30px 0;
 }
 
-/* Detail page styling */
-main h1 {
-  color: var(--text-dark);
-  font-size: 2.2rem;
+.empty-state p {
+  font-size: 1.3rem;
   margin-bottom: 20px;
+}
+
+.messages {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
   text-align: center;
 }
 
-/* Back button */
+.messages li {
+  background: #34495e;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 5px 0;
+  color: var(--text-dark);
+}
+
+.messages li.success { 
+  background: var(--accent-green); 
+  color: #fff; 
+}
+
+.messages li.error { 
+  background: #e53935; 
+  color: #fff; 
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.product-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Back button exception */
 main > p:first-child {
-  background: none;
-  border: none;
-  padding: 0;
+  background: none !important;
+  border: none !important;
+  padding: 0 !important;
   margin-bottom: 20px;
   text-align: left;
 }
 
-/* Responsive design */
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
 @media (max-width: 768px) {
-  body {
-    padding: 10px;
-  }
+  /* Hapus body padding dan main padding adjustments */
   
   header h1 {
     font-size: 2rem;
@@ -244,8 +405,9 @@ main > p:first-child {
     gap: 20px;
   }
   
-  main {
-    padding: 20px;
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
   }
 }
 

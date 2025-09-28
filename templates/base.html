@@ -2,23 +2,45 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    {% block meta %}{% endblock meta %}
+    {% block meta %}
+      <meta charset="UTF-8" />
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1.0"
+      />
+    {% endblock meta %}
+
     <title>{% block title %}Warung Football{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Tailwind via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    {% block head %}{% endblock head %}
   </head>
-  <body>
-    <header>
-      <h1>Warung Football: Get the Best for Your Rupiah!</h1>
+  <body class="bg-gray-50 text-gray-900">
+    <header class="p-4 bg-blue-600 text-white shadow-md">
+      <h1 class="text-xl font-bold">
+        Warung Football: Get the Best for Your Rupiah!
+      </h1>
+
       {% if messages %}
-        <ul class="messages">
+        <ul class="messages mt-2">
           {% for message in messages %}
-            <li class="{{ message.tags }}">{{ message }}</li>
+            <li
+              class="{{ message.tags }} 
+                {% if message.tags == 'success' %} text-green-600 {% endif %}
+                {% if message.tags == 'error' %} text-red-600 {% endif %}
+                {% if message.tags == 'warning' %} text-yellow-600 {% endif %}
+              "
+            >
+              {{ message }}
+            </li>
           {% endfor %}
         </ul>
       {% endif %}
     </header>
-    <main>
+
+    <main class="container mx-auto p-6">
       {% block content %}{% endblock %}
     </main>
   </body>

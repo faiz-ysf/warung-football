@@ -100,6 +100,15 @@ def delete_product(request, id):
         return redirect('main:show_main')
     return render(request, "confirm_delete.html", {"product": product})
 
+def edit_product(request, id):
+    product = get_object_or_404(Product, pk=id)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid() and request.method == 'POST':
+        form.save()
+        return redirect('main:show_main')
+    data = {'form' : form}
+    
+    return render(request, "edit_product.html", data)
 # show Data in formatted ways
 
 def show_xml(request):

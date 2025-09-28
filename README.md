@@ -1,4 +1,50 @@
-=## Apa itu Django `AuthenticationForm`? Jelaskan juga kelebihan dan kekurangannya.
+Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
+
+
+Mengapa *responsive design* menjadi konsep yang penting dalam pengembangan aplikasi *web*? Berikan contoh aplikasi yang sudah dan belum menerapkan *responsive design*, serta jelaskan mengapa!
+
+Responsive design adalah konsep penting dalam pengembangan aplikasi web karena membuat tampilan dan fungsi aplikasi tetap nyaman digunakan di berbagai perangkat dengan ukuran layar berbeda, mulai dari ponsel hingga desktop. Dengan desain yang responsif, pengalaman pengguna menjadi lebih baik, aksesibilitas meningkat, performa lebih efisien, serta mendukung SEO. Contoh situs yang sudah menerapkan responsive design adalah MDN Web Docs atau web.dev, di mana layout dan tipografinya menyesuaikan otomatis dengan ukuran layar. Sebaliknya, situs lama dengan layout fixed-width atau dashboard yang tabelnya tidak menyesuaikan layar merupakan contoh yang belum responsif, sehingga sulit diakses di perangkat mobile.
+
+
+Jelaskan perbedaan antara *margin*, *border*, dan *padding*, serta cara untuk mengimplementasikan ketiga hal tersebut!
+
+Dalam CSS box model, terdapat tiga elemen penting: margin, border, dan padding. Margin adalah ruang luar elemen untuk memberi jarak dengan elemen lain, border adalah garis tepi yang membungkus elemen, sementara padding adalah ruang dalam antara konten dan border. Kombinasi ketiga aspek ini menentukan jarak dan keterbacaan antar elemen.
+
+
+
+Jelaskan konsep *flex box* dan *grid layout* beserta kegunaannya!
+
+Untuk mengatur tata letak modern, terdapat dua teknik utama yaitu flexbox dan grid layout. Flexbox bersifat satu dimensi (baris atau kolom) dan sangat cocok digunakan untuk menyusun item seperti menu navigasi atau kartu yang sejajar. Sebaliknya, grid layout memungkinkan pengaturan dua dimensi (baris dan kolom sekaligus), sehingga lebih ideal untuk membuat struktur layout halaman, seperti header, main content, sidebar, dan footer dalam satu grid terorganisasi. Dengan memanfaatkan responsive design, box model, flexbox, dan grid secara bersama, developer dapat membangun aplikasi web yang adaptif, teratur, dan nyaman di semua perangkat.
+
+
+Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial)!
+
+
+
+
+
+### Sumber Referensi
+https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_box_model
+https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Flexbox
+https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Grids
+
+https://alistapart.com/article/responsive-web-design/
+
+
+
+---
+
+
+
+
+
+
+
+
+
+## Apa itu Django `AuthenticationForm`? Jelaskan juga kelebihan dan kekurangannya.
 `AuthenticationForm` adalah form bawaan Django yang digunakan untuk proses login user. Form ini otomatis menyediakan field username dan password, serta validasi untuk memastikan user benar-benar ada di database dan password yang dimasukkan valid. Form ini biasanya dipakai bersama dengan view LoginView atau view custom.
 
 Kelebihan yang didapatkan berupa tidak perlu membuat form manual untuk login, sudah dilengkapi validasi autentikasi, terhubung langsung dengan backend Django, dan mudah diimplementasikan di file HTML. Tetapi kekurangannya juga ada seperti sangat susah untuk menambahkan form tambahan (seperti login dengan verifikasi CAPTCHA), tidak mudah dimodifikasi untuk desain User Interface-nya, dan membatasi integrasi login seperti Oauth/JWT tanpa mengubah dari bentuk awalnya.
