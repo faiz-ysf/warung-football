@@ -1,5 +1,6 @@
 Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
 
+Jika terdapat beberapa CSS selector untuk elemen yang sama, maka browser memilih berdasarkan tingkat spesifisitas. Urutannya: inline style memiliki prioritas tertinggi, kemudian ID selector, lalu class/attribute/pseudo-class, lalu tag/pseudo-element, dan terakhir universal/inheritance. Jika spesifisitas sama, maka aturan yang ditulis paling terakhir di CSS yang akan dipakai. !important bisa mengoverride semua aturan ini.
 
 Mengapa *responsive design* menjadi konsep yang penting dalam pengembangan aplikasi *web*? Berikan contoh aplikasi yang sudah dan belum menerapkan *responsive design*, serta jelaskan mengapa!
 
@@ -19,7 +20,19 @@ Untuk mengatur tata letak modern, terdapat dua teknik utama yaitu flexbox dan gr
 
 Jelaskan bagaimana cara kamu mengimplementasikan *checklist* di atas secara *step-by-step* (bukan hanya sekadar mengikuti tutorial)!
 
+(1) Saya menambahkan background gradien dan memastikan halaman responsif menggunakan Tailwind.
 
+(2) Saya menambahkan kondisi di template {% if not product_list %} untuk membuat empty state berisi ilustrasi dan tombol add.
+
+(3) Jika produk ada, saya menuliskan loop {% for product %} untuk menampilkan tiap produk dalam card.
+
+(4) Card product saya desain dengan efek glassmorphism (semi transparan, blur belakang, border tipis, shadow) agar terlihat modern.
+
+(5) Saya buat grid produk menggunakan Tailwind responsive classes (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3).
+
+(6) Saya menambahkan tombol filter “All" dan “My Products” dengan kondisi warna aktif.
+
+(7) Terakhir, saya testing dengan produk kosong dan dengan beberapa produk untuk memastikan checklist terpenuhi.
 
 
 

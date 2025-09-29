@@ -1,76 +1,71 @@
 {% load static %}
-<article class="bg-white rounded-lg border border-gray-200 hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+<article class="relative rounded-2xl overflow-hidden
+                bg-white/10 backdrop-blur-xl 
+                border border-white/20 
+                shadow-lg hover:shadow-2xl 
+                transition-transform duration-300 hover:scale-[1.02]">
+  
   <!-- Thumbnail -->
-  <div class="aspect-video relative overflow-hidden">
+  <div class="aspect-video overflow-hidden">
     {% if product.thumbnail %}
-      <img src="{{ product.thumbnail }}" alt="{{ product.name }}" class="w-full h-full object-cover">
+      <img src="{{ product.thumbnail }}" alt="{{ product.name }}"
+           class="w-full h-full object-cover opacity-80 hover:opacity-100 transition duration-500">
     {% else %}
-      <div class="w-full h-full bg-gray-200"></div>
+      <div class="w-full h-full bg-white/5"></div>
     {% endif %}
+  </div>
 
-    <!-- Category Badge -->
-    <div class="absolute top-3 left-3">
-      <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-green-600 text-white">
+  <!-- Content -->
+  <div class="p-6 text-white">
+    <!-- Category + Status -->
+    <div class="flex gap-2 mb-4">
+      <span class="px-2 py-1 rounded-md text-xs font-medium bg-[#3AB09E]/70">
         {{ product.get_category_display }}
       </span>
-    </div>
-
-    <!-- Status Badges -->
-    <div class="absolute top-3 right-3 flex space-x-2">
       {% if product.is_featured %}
-        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
+        <span class="px-2 py-1 rounded-md text-xs font-medium bg-yellow-500/30 text-yellow-200">
           Featured
         </span>
       {% endif %}
       {% if product.is_product_trending %}
-        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-red-100 text-red-800">
+        <span class="px-2 py-1 rounded-md text-xs font-medium bg-red-500/30 text-red-200">
           Trending
         </span>
       {% endif %}
     </div>
-  </div>
 
-  <!-- Content -->
-  <div class="p-5">
-    <div class="flex items-center text-sm text-gray-500 mb-3">
-      <time datetime="{{ product.created_at|date:'c' }}">
-        {{ product.created_at|date:"M j, Y" }}
-      </time>
-      <span class="mx-2">•</span>
-      <span>{{ product.item_views }} views</span>
-    </div>
-
-    <h3 class="text-lg font-semibold text-gray-900 mb-3 leading-tight">
-      <a href="{% url 'main:show_product' product.id %}" class="hover:text-green-600 transition-colors block truncate">
+    <!-- Title -->
+    <h3 class="text-xl font-bold mb-3">
+      <a href="{% url 'main:show_product' product.id %}"
+         class="hover:text-[#3AB09E] transition-colors">
         {{ product.name }}
       </a>
     </h3>
 
-    <p class="text-gray-600 text-sm leading-relaxed mb-4 overflow-hidden max-h-16">
+    <!-- Description -->
+    <p class="text-sm text-white/80 mb-6 line-clamp-3">
       {{ product.descriptions|truncatewords:20 }}
     </p>
 
-    <!-- Action Buttons -->
-    {% if user.is_authenticated and product.user == user %}
-      <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-        <a href="{% url 'main:show_product' product.id %}" class="text-green-600 hover:text-green-700 font-medium text-sm transition-colors">
-          View details
-        </a>
-        <div class="flex space-x-2 text-sm">
-          <a href="{% url 'main:edit_product' product.id %}" class="text-gray-600 hover:text-gray-700 transition-colors">
-            Edit
-          </a>
-          <a href="{% url 'main:delete_product' product.id %}" class="text-red-600 hover:text-red-700 transition-colors">
-            Delete
-          </a>
-        </div>
+    <!-- Footer (meta & actions) -->
+    <div class="flex items-center justify-between text-sm text-white/70 border-t border-white/10 pt-4">
+      <div class="flex gap-3">
+        <span>{{ product.item_views }} views</span>
+        <time datetime="{{ product.created_at|date:'c' }}">
+          {{ product.created_at|date:"M j, Y" }}
+        </time>
       </div>
-    {% else %}
-      <div class="pt-4 border-t border-gray-100">
-        <a href="{% url 'main:show_product' product.id %}" class="text-green-600 hover:text-green-700 font-medium text-sm transition-colors">
+      {% if user.is_authenticated and product.user == user %}
+        <div class="flex gap-3">
+          <a href="{% url 'main:edit_product' product.id %}" class="hover:text-white">Edit</a>
+          <a href="{% url 'main:delete_product' product.id %}" class="text-red-400 hover:text-red-500">Delete</a>
+        </div>
+      {% else %}
+        <a href="{% url 'main:show_product' product.id %}" 
+           class="text-[#3AB09E] hover:text-[#39A78D] font-medium">
           View details →
         </a>
-      </div>
-    {% endif %}
+      {% endif %}
+    </div>
   </div>
 </article>

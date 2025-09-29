@@ -6,82 +6,77 @@
 {% endblock meta %}
 
 {% block content %}
-<div class="bg-gray-50 w-full min-h-screen">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    
+<div class="min-h-screen pt-24 px-4 sm:px-6 lg:px-8"
+     style="background: linear-gradient(135deg,#006D6F,#317873,#3AB09E);">
+  <div class="max-w-6xl mx-auto py-10">
+
     <!-- Back Navigation -->
     <div class="mb-6">
-      <a href="{% url 'main:show_main' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+      <a href="{% url 'main:show_main' %}" 
+         class="text-white/80 hover:text-white font-medium transition-colors">
         ← Back to Products
       </a>
     </div>
-    
-    <!-- Article / Product Detail Card -->
-    <article class="bg-white rounded-lg border border-gray-200 overflow-hidden">
-      
+
+    <!-- Glass Detail Card -->
+    <article class="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl overflow-hidden text-white">
       <!-- Header -->
       <div class="p-6 sm:p-8">
         <div class="flex flex-wrap items-center gap-2 mb-4">
-          <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-green-600 text-white">
+          <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#3AB09E] text-white">
             {{ product.get_category_display }}
           </span>
           {% if product.is_featured %}
-            <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800">
+            <span class="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/20 border border-yellow-400/30 text-yellow-200">
               Featured
             </span>
           {% endif %}
           {% if product.is_product_trending %}
-            <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-red-100 text-red-800">
+            <span class="px-3 py-1 rounded-md text-xs font-medium bg-red-500/20 border border-red-400/30 text-red-200">
               Trending
             </span>
           {% endif %}
         </div>
-        
-        <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight mb-4">
+
+        <h1 class="text-3xl sm:text-4xl font-bold leading-tight mb-4">
           {{ product.name }}
         </h1>
-        
-        <div class="flex flex-wrap items-center text-sm text-gray-500 gap-4">
+
+        <div class="flex flex-wrap items-center text-sm text-white/70 gap-4">
           <time datetime="{{ product.created_at|date:'c' }}">
             {{ product.created_at|date:"M j, Y g:i A" }}
           </time>
           <span>{{ product.item_views }} views</span>
-          <span class="font-medium text-green-700">Rp {{ product.price }}</span>
+          <span class="font-medium text-[#3AB09E]">Rp {{ product.price }}</span>
         </div>
       </div>
 
       <!-- Thumbnail Image -->
       {% if product.thumbnail %}
-        <div class="px-6 sm:px-8">
-          <img src="{{ product.thumbnail }}" 
-               alt="{{ product.name }}" 
-               class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg">
-        </div>
+      <div class="px-6 sm:px-8">
+        <img src="{{ product.thumbnail }}" 
+             alt="{{ product.name }}" 
+             class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-md">
+      </div>
       {% endif %}
 
-      <!-- Content / Descriptions -->
+      <!-- Descriptions -->
       <div class="p-6 sm:p-8">
-        <div class="prose prose-lg max-w-none">
-          <div class="text-gray-700 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-            {{ product.descriptions }}
-          </div>
+        <div class="text-white/90 leading-relaxed whitespace-pre-line text-base sm:text-lg">
+          {{ product.descriptions }}
         </div>
       </div>
 
       <!-- Seller Info -->
-      <div class="border-t border-gray-200 p-6 sm:p-8 bg-gray-50">
-        <div class="flex items-center justify-between">
-          <div>
-            <div class="font-medium text-gray-900">
-              {% if product.user %}
-                <p>Seller: {{ product.user.username }}</p>
-              {% else %}
-                <p>Seller: Unknown</p>
-              {% endif %}
-            </div>
-            <p class="text-sm text-gray-500">Product Owner</p>
-          </div>
+      <div class="border-t border-white/20 p-6 sm:p-8 bg-white/5">
+        <div class="font-medium">
+          {% if product.user %}
+            Seller: <span class="text-[#3AB09E]">{{ product.user.username }}</span>
+          {% else %}
+            Seller: Unknown
+          {% endif %}
         </div>
+        <p class="text-sm text-white/70">Product Owner</p>
       </div>
     </article>
   </div>

@@ -1,16 +1,36 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Confirm Delete - Warung Football{% endblock %}
+{% block meta %}
+<title>Confirm Delete - Warung Football</title>
+{% endblock meta %}
 
 {% block content %}
-<h1>Delete Product</h1>
-<p>Are you sure you want to delete <b>{{ product.name }}</b>?<br>This action cannot be undone.</p>
+<div class="min-h-screen flex items-center justify-center px-4"
+     style="background: linear-gradient(135deg,#006D6F,#317873,#3AB09E);">
+  <div class="max-w-md w-full">
 
-<form method="POST" class="delete-form">
-  {% csrf_token %}
-  <button type="submit" class="btn delete-button">Yes, delete</button>
-  <a href="{% url 'main:show_main' %}">
-    <button type="button" class="btn">Cancel</button>
-  </a>
-</form>
-{% endblock %}
+    <!-- Glass Card -->
+    <div class="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl p-8 text-white text-center">
+      <h1 class="text-2xl font-bold mb-4">Delete Product</h1>
+      <p class="mb-6">
+        Are you sure you want to delete  
+        <b class="text-red-300">{{ product.name }}</b>?
+        <br>This action cannot be undone.
+      </p>
+
+      <form method="POST" class="flex flex-col sm:flex-row gap-4 justify-center">
+        {% csrf_token %}
+        <button type="submit" 
+                class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-md font-medium transition-colors shadow">
+          Yes, delete
+        </button>
+        <a href="{% url 'main:show_main' %}" 
+           class="px-6 py-3 border border-white/20 text-white/80 rounded-md font-medium hover:bg-white/10 hover:text-white transition-colors text-center">
+          Cancel
+        </a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}
