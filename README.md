@@ -2,9 +2,13 @@
 
 Jika terdapat beberapa CSS selector untuk elemen yang sama, maka browser memilih berdasarkan tingkat spesifisitas. Urutannya: inline style memiliki prioritas tertinggi, kemudian ID selector, lalu class/attribute/pseudo-class, lalu tag/pseudo-element, dan terakhir universal/inheritance. Jika spesifisitas sama, maka aturan yang ditulis paling terakhir di CSS yang akan dipakai. !important bisa mengoverride semua aturan ini.
 
-# Mengapa *responsive design* menjadi konsep yang penting dalam pengembangan aplikasi *web*? Berikan contoh aplikasi yang sudah dan belum menerapkan *responsive design*, serta jelaskan mengapa!
+# Mengapa responsive design menjadi konsep yang penting dalam pengembangan aplikasi web? Berikan contoh aplikasi yang sudah dan belum menerapkan responsive design, serta jelaskan mengapa!
 
-Responsive design adalah konsep penting dalam pengembangan aplikasi web karena membuat tampilan dan fungsi aplikasi tetap nyaman digunakan di berbagai perangkat dengan ukuran layar berbeda, mulai dari ponsel hingga desktop. Dengan desain yang responsif, pengalaman pengguna menjadi lebih baik, aksesibilitas meningkat, performa lebih efisien, serta mendukung SEO. Contoh situs yang sudah menerapkan responsive design adalah MDN Web Docs atau web.dev, di mana layout dan tipografinya menyesuaikan otomatis dengan ukuran layar. Sebaliknya, situs lama dengan layout fixed-width atau dashboard yang tabelnya tidak menyesuaikan layar merupakan contoh yang belum responsif, sehingga sulit diakses di perangkat mobile.
+Responsive design adalah konsep penting dalam pengembangan aplikasi web karena memastikan tampilan dan fungsi aplikasi tetap nyaman digunakan di berbagai perangkat dengan ukuran layar berbeda, mulai dari ponsel hingga desktop. Dengan desain yang responsif, pengalaman pengguna menjadi lebih baik, aksesibilitas meningkat, performa lebih efisien, serta mendukung SEO.
+
+Contoh situs yang sudah menerapkan responsive design adalah MDN Web Docs atau web.dev, di mana layout, menu navigasi, dan tipografi secara otomatis menyesuaikan dengan ukuran layar perangkat yang dipakai. Hal ini membuat situs tetap mudah diakses baik di desktop maupun perangkat mobile.
+
+Sebaliknya, ada situs yang belum menerapkan responsive design, misalnya https://www.berkshirehathaway.com/ dan https://www.yahoo.co.jp/. Desain kedua situs tersebut tidak berubah meskipun layar di-resize atau resolusi diubah, bahkan tidak memiliki tampilan berbeda ketika diakses melalui perangkat mobile. Akibatnya, pengalaman pengguna di perangkat kecil menjadi kurang nyaman karena harus melakukan zoom in atau scrolling berlebihan.
 
 
 # Jelaskan perbedaan antara *margin*, *border*, dan *padding*, serta cara untuk mengimplementasikan ketiga hal tersebut!
