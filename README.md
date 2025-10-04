@@ -1,3 +1,51 @@
+
+
+## Tugas 6:
+
+# 1. Apa perbedaan antara **synchronous request** dan **asynchronous request**?
+
+Synchronous request adalah pola komunikasi antara client dan server di mana browser harus menunggu response dari server sebelum bisa melanjutkan proses lain. Ketika sebuah request synchronous dilakukan, halaman akan "freeze" atau berhenti interaktif sampai server mengembalikan responnya, biasanya berupa reload penuh dari seluruh halaman. Sebaliknya, asynchronous request memungkinkan data dikirim ke server dan diproses di latar belakang tanpa menghentikan aktivitas pengguna di halaman. Dengan asynchronous request (misalnya AJAX), hanya bagian tertentu dari halaman yang diperbarui, sementara pengguna tetap bisa berinteraksi dengan halaman web. Dengan kata lain, synchronous lebih sederhana tapi membuat user experience lambat, sedangkan asynchronous lebih dinamis dan cepat.
+
+---
+
+# 2. Bagaimana **AJAX bekerja di Django** (alur request–response)?
+
+Dalam Django, AJAX berjalan dengan menggunakan JavaScript di sisi client untuk mengirim permintaan HTTP (umumnya dengan fetch atau XMLHttpRequest) ke server. Alurnya dimulai ketika sebuah event di client (misalnya klik tombol atau submit form) memicu AJAX request. Request tersebut diarahkan ke URL atau endpoint Django tertentu yang di-handle oleh sebuah view. View Django kemudian memproses request tersebut, misalnya melakukan query database atau logika bisnis tertentu, lalu biasanya mengembalikan data dalam format JSON. Response JSON tersebut diterima kembali oleh JavaScript di client, dan hasilnya dipakai untuk memperbarui tampilan halaman secara selektif, tanpa reload penuh. Dengan alur ini, Django tetap menjalankan logika backend seperti biasa, hanya saja pengembalian datanya lebih ringan (JSON, bukan HTML lengkap).
+
+---
+
+# 3. Apa keuntungan menggunakan **AJAX** dibandingkan render biasa di Django?
+
+Penggunaan AJAX dalam Django memiliki beberapa keunggulan dibanding render biasa. Pertama, dari sisi performa, AJAX lebih efisien karena hanya mengirim dan menerima data yang dibutuhkan, sehingga response lebih cepat dan hemat bandwidth. Kedua, dari sisi UX, AJAX membuat website terasa lebih responsif: bagian tertentu dari halaman bisa segera berubah tanpa reload penuh. Hal ini mendukung interaktivitas yang lebih baik, misalnya saat pengguna ingin melihat daftar komentar baru, notifikasi real-time, atau pencarian instan. Ketiga, AJAX mendukung pengembangan fitur modern seperti infinite scroll atau form validation langsung, yang sulit dicapai dengan full page reload. Dengan demikian, AJAX membuat aplikasi Django terasa lebih cepat, ringan, dan lebih dekat dengan standar aplikasi web modern. 
+
+---
+
+# 4. Bagaimana cara memastikan **keamanan** saat menggunakan AJAX untuk fitur **Login dan Register** di Django?
+
+Meski AJAX meningkatkan interaktivitas, penggunaan untuk fitur sensitif seperti login dan register harus tetap memperhatikan keamanan. Beberapa cara yang bisa dilakukan antara lain: pertama, gunakan CSRF token, karena Django memiliki mekanisme bawaan yang wajib disertakan dalam setiap request POST agar tidak rentan terhadap serangan Cross-Site Request Forgery. Kedua, gunakan HTTPS untuk mengenkripsi data sensitif seperti username dan password, sehingga tidak mudah disadap. Ketiga, lakukan validasi input di server, karena validasi di sisi client bisa dilewati. Django sudah menyediakan forms dan authentication system yang dapat dipakai untuk validasi dan keamanan password secara aman (hashing). Keempat, batasi metode request hanya untuk POST saat login atau register, jangan izinkan GET. Dengan langkah-langkah ini, keamanan tetap terjaga meskipun komunikasi dilakukan secara asynchronous dengan AJAX.
+
+---
+
+## 5. Bagaimana AJAX mempengaruhi **pengalaman pengguna (UX)** pada website?
+
+AJAX memiliki pengaruh sangat besar pada pengalaman pengguna sebuah website. Dengan AJAX, halaman web terasa lebih cepat dan interaktif, karena pengguna tidak perlu menunggu reload penuh hanya untuk melihat perubahan kecil. Misalnya, pada aplikasi chat, komentar, atau notifikasi, AJAX memungkinkan data baru ditampilkan secara real-time tanpa berpindah halaman. Hal ini membuat alur interaksi terasa lebih lancar dan natural. Selain itu, pengguna dapat melakukan banyak aktivitas secara paralel tanpa terhenti oleh request ke server. Hasilnya, website menjadi lebih modern, responsif, dan user-friendly. Secara keseluruhan, AJAX meningkatkan kepuasan pengguna karena mereka merasakan performa dan pengalaman yang sebanding dengan aplikasi desktop atau mobile native.
+
+
+
+
+
+
+
+
+
+
+---
+
+## Tugas 5:
+
+
+
+
 # Jika terdapat beberapa CSS selector untuk suatu elemen HTML, jelaskan urutan prioritas pengambilan CSS selector tersebut!
 
 Jika terdapat beberapa CSS selector untuk elemen yang sama, maka browser memilih berdasarkan tingkat spesifisitas. Urutannya: inline style memiliki prioritas tertinggi, kemudian ID selector, lalu class/attribute/pseudo-class, lalu tag/pseudo-element, dan terakhir universal/inheritance. Jika spesifisitas sama, maka aturan yang ditulis paling terakhir di CSS yang akan dipakai. !important bisa mengoverride semua aturan ini.

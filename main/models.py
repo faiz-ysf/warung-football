@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 class Product(models.Model):
     PRODUCT_OPTIONS = [
         ('shoes', 'Shoes'),
-        ('men sportwear', 'Men Sportwear'),
-        ('women sportwear', 'Women Sportwear'),
-        ('kids sportwear', 'Kids Sportwear'),
+        ('men_sportwear', 'Men Sportwear'),
+        ('women_sportwear', 'Women Sportwear'),
+        ('kids_sportwear', 'Kids Sportwear'),
         ('accessories', 'Accessories'),
         ('equipment', 'Sports Equipment'),
         ('bags', 'Bags & Backpacks'),

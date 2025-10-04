@@ -57,12 +57,20 @@
       </div>
       {% if user.is_authenticated and product.user == user %}
         <div class="flex gap-3">
-          <a href="{% url 'main:edit_product' product.id %}" class="hover:text-white">Edit</a>
-          <a href="{% url 'main:delete_product' product.id %}" class="text-red-400 hover:text-red-500">Delete</a>
+          <button type="button"
+                  onclick="openEditModal('{{ product.id }}')"
+                  class="hover:text-white transition">
+            Edit
+          </button>
+          <button type="button"
+                  onclick="openDeleteModal('{{ product.id }}', '{{ product.name|escapejs }}')"
+                  class="text-red-400 hover:text-red-500 transition">
+            Delete
+          </button>
         </div>
       {% else %}
         <a href="{% url 'main:show_product' product.id %}" 
-           class="text-[#3AB09E] hover:text-[#39A78D] font-medium">
+          class="text-[#3AB09E] hover:text-[#39A78D] font-medium">
           View details →
         </a>
       {% endif %}

@@ -22,4 +22,7 @@ urlpatterns = [
     path("json/", views.show_json, name="show_json"),
     path("xml/<uuid:product_id>/", views.show_xml_by_id, name="show_xml_by_id"),
     path("json/<uuid:product_id>/", views.show_json_by_id, name="show_json_by_id"),
+	
+    # AJAX Implementation
+	path('create-product-ajax', views.add_product_entry_ajax, name='add_product_entry_ajax')
 ]

@@ -2,15 +2,14 @@
 {% load static %}
 
 {% block meta %}
-<title>{{ product.name }} - Warung Football</title>
+<title>Product Details - Warung Football</title>
 {% endblock meta %}
 
 {% block content %}
 <div class="min-h-screen flex"
      style="background:linear-gradient(135deg,#0f172a,#1e293b,#006D6F);">
-  <div class="max-w-6xl mx-auto py-10">
 
-    <!-- Back Navigation -->
+  <div class="max-w-6xl mx-auto py-10 w-full px-6">
     <div class="mb-6">
       <a href="{% url 'main:show_main' %}" 
          class="text-white/80 hover:text-white font-medium transition-colors">
@@ -18,67 +17,94 @@
       </a>
     </div>
 
-    <!-- Glass Detail Card -->
-    <article class="bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl overflow-hidden text-white">
-      <!-- Header -->
-      <div class="p-6 sm:p-8">
-        <div class="flex flex-wrap items-center gap-2 mb-4">
-          <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#3AB09E] text-white">
-            {{ product.get_category_display }}
-          </span>
-          {% if product.is_featured %}
-            <span class="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/20 border border-yellow-400/30 text-yellow-200">
-              Featured
-            </span>
-          {% endif %}
-          {% if product.is_product_trending %}
-            <span class="px-3 py-1 rounded-md text-xs font-medium bg-red-500/20 border border-red-400/30 text-red-200">
-              Trending
-            </span>
-          {% endif %}
-        </div>
+    <!-- Product Detail Container -->
+    <div id="product-detail"
+         class="hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl overflow-hidden text-white">
+      <div id="product-header" class="p-6 sm:p-8 border-b border-white/20"></div>
+      <div id="product-image"></div>
+      <div id="product-description" class="p-6 sm:p-8 text-white/90 leading-relaxed whitespace-pre-line text-base sm:text-lg"></div>
+      <div id="seller-info" class="border-t border-white/20 p-6 sm:p-8 bg-white/5"></div>
+    </div>
 
-        <h1 class="text-3xl sm:text-4xl font-bold leading-tight mb-4">
-          {{ product.name }}
-        </h1>
+    <!-- Loading -->
+    <div id="loading" class="text-center text-white py-20">
+      <div class="animate-spin w-10 h-10 border-4 border-white/20 border-t-[#3AB09E] mx-auto rounded-full mb-4"></div>
+      <p>Loading product details...</p>
+    </div>
 
-        <div class="flex flex-wrap items-center text-sm text-white/70 gap-4">
-          <time datetime="{{ product.created_at|date:'c' }}">
-            {{ product.created_at|date:"M j, Y g:i A" }}
-          </time>
-          <span>{{ product.item_views }} views</span>
-          <span class="font-medium text-[#3AB09E]">Rp {{ product.price }}</span>
-        </div>
-      </div>
-
-      <!-- Thumbnail Image -->
-      {% if product.thumbnail %}
-      <div class="px-6 sm:px-8">
-        <img src="{{ product.thumbnail }}" 
-             alt="{{ product.name }}" 
-             class="w-full h-64 sm:h-80 lg:h-96 object-cover rounded-lg shadow-md">
-      </div>
-      {% endif %}
-
-      <!-- Descriptions -->
-      <div class="p-6 sm:p-8">
-        <div class="text-white/90 leading-relaxed whitespace-pre-line text-base sm:text-lg">
-          {{ product.descriptions }}
-        </div>
-      </div>
-
-      <!-- Seller Info -->
-      <div class="border-t border-white/20 p-6 sm:p-8 bg-white/5">
-        <div class="font-medium">
-          {% if product.user %}
-            Seller: <span class="text-[#3AB09E]">{{ product.user.username }}</span>
-          {% else %}
-            Seller: Unknown
-          {% endif %}
-        </div>
-        <p class="text-sm text-white/70">Product Owner</p>
-      </div>
-    </article>
+    <!-- Error -->
+    <div id="error"
+         class="hidden text-center bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl p-8 shadow-md">
+      <h3 class="text-lg font-semibold mb-2">Failed to load product</h3>
+      <p class="text-sm mb-4">Please refresh or try again later.</p>
+      <button id="retry" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium transition-colors">Retry</button>
+    </div>
   </div>
 </div>
+
+<script>
+const productId = "{{ product.id }}";
+const ENDPOINT = `/json/${productId}/`; // Uses your Django JSON URL
+
+const detailBox = document.getElementById("product-detail");
+const headerBox = document.getElementById("product-header");
+const imageBox = document.getElementById("product-image");
+const descBox = document.getElementById("product-description");
+const sellerBox = document.getElementById("seller-info");
+
+const loading = document.getElementById("loading");
+const errorBox = document.getElementById("error");
+const retryBtn = document.getElementById("retry");
+
+function toggleDisplay({ showDetail=false, showLoading=false, showError=false }) {
+  detailBox.classList.toggle("hidden", !showDetail);
+  loading.classList.toggle("hidden", !showLoading);
+  errorBox.classList.toggle("hidden", !showError);
+}
+
+async function fetchProduct() {
+  toggleDisplay({ showLoading: true });
+  try {
+    const res = await fetch(ENDPOINT);
+    if (!res.ok) throw new Error("Failed to fetch product details");
+    const product = await res.json();
+    renderProduct(product);
+  } catch (err) {
+    console.error(err);
+    toggleDisplay({ showError: true });
+  }
+}
+
+function renderProduct(product) {
+  headerBox.innerHTML = `
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+      <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#3AB09E] text-white">${product.category}</span>
+      ${product.is_featured ? `<span class="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/20 border border-yellow-400/30 text-yellow-200">Featured</span>` : ""}
+      ${product.is_product_trending ? `<span class="px-3 py-1 rounded-md text-xs font-medium bg-red-500/20 border border-red-400/30 text-red-200">Trending</span>` : ""}
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-3">${product.name}</h1>
+    <div class="flex flex-wrap items-center text-sm text-white/70 gap-4">
+      <time>${new Date(product.date).toLocaleString()}</time>
+      <span>${product.item_views} views</span>
+      <span class="font-medium text-[#3AB09E]">Rp ${Number(product.price).toLocaleString()}</span>
+    </div>
+  `;
+
+  imageBox.innerHTML = product.thumbnail
+    ? `<div class="px-6 sm:px-8"><img src="${product.thumbnail}" alt="${product.name}" class="w-full h-80 lg:h-96 object-cover rounded-lg shadow-md"></div>`
+    : "";
+
+  descBox.textContent = product.descriptions || "No description available.";
+
+  sellerBox.innerHTML = `
+    <div class="font-medium">Seller: <span class="text-[#3AB09E]">${product.seller}</span></div>
+    <p class="text-sm text-white/70">Product Owner</p>
+  `;
+
+  toggleDisplay({ showDetail: true });
+}
+
+retryBtn.addEventListener("click", fetchProduct);
+fetchProduct();
+</script>
 {% endblock content %}

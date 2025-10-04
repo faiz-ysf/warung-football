@@ -1,0 +1,164 @@
+<!-- modal.html -->
+<div id="productModal"
+     class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+  <div id="productModalContent"
+       class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-xl 
+              text-white w-11/12 sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-1/3 max-h-screen overflow-y-auto">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between p-6 border-b border-white/20">
+      <div>
+        <h3 class="text-2xl font-semibold">Add New Product</h3>
+        <p class="text-sm text-white/70 mt-1">
+          Share your product with the Warung Football community.
+        </p>
+      </div>
+      <button type="button"
+              class="text-white/70 hover:text-white rounded-lg p-2"
+              onclick="closeProductModal()">
+        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" 
+             viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" 
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 
+                   111.414 1.414L11.414 10l4.293 4.293a1 1 0 
+                   01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 
+                   01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 
+                   010-1.414z" clip-rule="evenodd"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="px-6 py-4 space-y-6">
+      <form id="productForm" class="space-y-4">
+        <!-- Product Name -->
+        <div>
+          <label for="product_name" class="block text-sm font-medium mb-2 text-white/80">
+            Product Name
+          </label>
+          <input type="text" id="product_name" name="name" required
+                 class="w-full px-4 py-2 rounded-md bg-white/90 text-gray-900 
+                        focus:outline-none focus:ring-2 focus:ring-[#3AB09E]"
+                 placeholder="Enter product name">
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label for="product_price" class="block text-sm font-medium mb-2 text-white/80">
+            Price
+          </label>
+          <input type="number" step="0.01" id="product_price" name="price" required
+                 class="w-full px-4 py-2 rounded-md bg-white/90 text-gray-900
+                        focus:outline-none focus:ring-2 focus:ring-[#3AB09E]"
+                 placeholder="Enter product price">
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label for="product_desc" class="block text-sm font-medium mb-2 text-white/80">
+            Description
+          </label>
+          <textarea id="product_desc" name="descriptions" rows="4" required
+                    class="w-full px-4 py-2 rounded-md bg-white/90 text-gray-900
+                           focus:outline-none focus:ring-2 focus:ring-[#3AB09E]"
+                    placeholder="Describe your product..."></textarea>
+        </div>
+
+        <!-- Thumbnail -->
+        <div>
+          <label for="product_thumb" class="block text-sm font-medium mb-2 text-white/80">
+            Thumbnail URL
+          </label>
+          <input type="url" id="product_thumb" name="thumbnail"
+                 class="w-full px-4 py-2 rounded-md bg-white/90 text-gray-900
+                        focus:outline-none focus:ring-2 focus:ring-[#3AB09E]"
+                 placeholder="https://example.com/image.jpg">
+        </div>
+
+        <!-- Category -->
+        <div>
+          <label for="product_category" class="block text-sm font-medium mb-2 text-white/80">
+            Category
+          </label>
+          <select id="product_category" name="category" required
+                  class="w-full px-4 py-2 rounded-md bg-white/90 text-gray-900
+                         focus:outline-none focus:ring-2 focus:ring-[#3AB09E]">
+            <option value="">Choose a category</option>
+            <option value="shoes">Shoes</option>
+            <option value="men_sportwear">Men Sportwear</option>
+            <option value="women_sportwear">Women Sportwear</option>
+            <option value="kids_sportwear">Kids Sportwear</option>
+            <option value="accessories">Accessories</option>
+            <option value="equipment">Sports Equipment</option>
+            <option value="bags">Bags & Backpacks</option>
+            <option value="outerwear">Jackets & Hoodies</option>
+          </select>
+        </div>
+
+        <!-- Featured -->
+        <div class="flex items-center">
+          <input id="product_featured" type="checkbox" name="is_featured"
+                 class="w-4 h-4 text-[#3AB09E] bg-gray-100 border-gray-300 rounded">
+          <label for="product_featured" class="ml-2 text-sm text-white/80">Feature this product</label>
+        </div>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="flex flex-col sm:flex-row gap-4 p-6 border-t border-white/10">
+      <button type="button" id="cancelProdBtn"
+              class="order-2 sm:order-1 px-6 py-3 border border-white/20 text-white/80 rounded-md 
+                     font-medium hover:bg-white/10 hover:text-white transition-colors text-center"
+              onclick="closeProductModal()">
+        Cancel
+      </button>
+      <button type="submit" id="saveProdBtn" form="productForm"
+              class="order-1 sm:order-2 flex-1 bg-[#3AB09E] hover:bg-[#39A78D] text-white 
+                     px-6 py-3 rounded-md font-medium transition-colors">
+        Add Product
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// --- Global modal control ---
+window.openProductModal = function () {
+  document.getElementById('productModal').classList.remove('hidden');
+};
+
+window.closeProductModal = function () {
+  document.getElementById('productModal').classList.add('hidden');
+};
+
+window.addProductEntry = async function () {
+  try {
+    const form = document.querySelector('#productForm');
+    const res = await fetch("{% url 'main:add_product_entry_ajax' %}", {
+      method: "POST",
+      body: new FormData(form),
+    });
+
+    if (!res.ok) throw new Error("Failed to add product.");
+
+    form.reset();
+    closeProductModal();
+    document.dispatchEvent(new CustomEvent('productAdded'));
+  } catch (err) {
+    console.error('Error:', err);
+  }
+  return false;
+};
+
+// Form listener (runs on any page containing this HTML)
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById("productForm");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      addProductEntry();
+    });
+  }
+});
+</script>

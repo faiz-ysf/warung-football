@@ -17,12 +17,6 @@
           <div class="text-sm font-medium">
             Welcome, {{ user.get_username }}!
           </div>
-          <!-- Tombol Add Product -->
-          <a href="{% url 'main:create_product' %}">
-            <button class="bg-[#3AB09E] hover:bg-[#39A78D] text-white px-4 py-2 rounded-md font-medium transition-colors shadow">
-              + Add Product
-            </button>
-          </a>
           <!-- Tombol Logout -->
           <a href="{% url 'main:logout' %}">
             <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors shadow">

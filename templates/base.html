@@ -9,12 +9,17 @@
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.5/dist/purify.min.js"></script>
+
       </head>
       <body class="min-h-screen font-sans"
             style="background:linear-gradient(135deg,#0f172a,#1e293b,#006D6F);">
 
         <main>
           {% block content %}{% endblock content %}
+          {% include 'modal.html' %}
+
+	        <script src="{% static 'js/modalControl.js' %}"></script>
         </main>
       </body>
 </html>
