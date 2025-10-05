@@ -17,94 +17,215 @@
       </a>
     </div>
 
-    <!-- Product Detail Container -->
-    <div id="product-detail"
-         class="hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl overflow-hidden text-white">
-      <div id="product-header" class="p-6 sm:p-8 border-b border-white/20"></div>
-      <div id="product-image"></div>
-      <div id="product-description" class="p-6 sm:p-8 text-white/90 leading-relaxed whitespace-pre-line text-base sm:text-lg"></div>
-      <div id="seller-info" class="border-t border-white/20 p-6 sm:p-8 bg-white/5"></div>
+    <!-- Detail Container -->
+    <div id="productDetail" class="hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-xl rounded-2xl overflow-hidden text-white">
+      <div id="productHeader" class="p-6 sm:p-8 border-b border-white/20"></div>
+      <div id="productImage" class="p-6 sm:p-8"></div>
+      <div id="productDescription" class="p-6 sm:p-8 text-white/90 leading-relaxed text-base sm:text-lg"></div>
+      <div id="sellerInfo" class="border-t border-white/20 p-6 sm:p-8 bg-white/5"></div>
     </div>
 
-    <!-- Loading -->
+    <!-- Loading State -->
     <div id="loading" class="text-center text-white py-20">
       <div class="animate-spin w-10 h-10 border-4 border-white/20 border-t-[#3AB09E] mx-auto rounded-full mb-4"></div>
-      <p>Loading product details...</p>
+      <p class="text-white/80">Loading product details...</p>
     </div>
 
-    <!-- Error -->
-    <div id="error"
-         class="hidden text-center bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl p-8 shadow-md">
-      <h3 class="text-lg font-semibold mb-2">Failed to load product</h3>
-      <p class="text-sm mb-4">Please refresh or try again later.</p>
-      <button id="retry" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md font-medium transition-colors">Retry</button>
+    <!-- Empty State (Invalid ID/No Product) -->
+    <div id="empty" class="hidden flex flex-col items-center justify-center py-20 text-white bg-white/5 rounded-xl border border-white/20">
+      <div class="w-16 h-16 mb-4 opacity-70">
+        <svg class="w-full h-full" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 0v6m0-6v6m6-6v6m-6 0h6m-6 0H9"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold mb-2">Product Not Found</h3>
+      <p class="text-white/70 mb-6">The requested product doesn't exist or has been removed.</p>
+      <a href="{% url 'main:show_main' %}" class="px-6 py-3 bg-[#3AB09E] text-white rounded-md hover:bg-[#39A78D] transition-colors">
+        Back to Products
+      </a>
+    </div>
+
+    <!-- Error State (Network/Fetch Fail) -->
+    <div id="error" class="hidden text-center bg-red-500/10 border border-red-500/30 text-red-300 rounded-xl p-8 shadow-md">
+      <h3 class="text-lg font-semibold mb-2">Failed to Load Product</h3>
+      <p class="error-msg text-sm mb-4">There was an error fetching the details. Check your connection and try refreshing.</p>
     </div>
   </div>
 </div>
 
 <script>
-const productId = "{{ product.id }}";
-const ENDPOINT = `/json/${productId}/`; // Uses your Django JSON URL
+// ========== AJAX PRODUCT DETAILS - Fixed Undefined Title + Full States ==========
+// Parses ID from URL or server; fetches JSON with 'name'; maps category; client trending
+// States: Loading/Empty/Error/Detail via toggles
 
-const detailBox = document.getElementById("product-detail");
-const headerBox = document.getElementById("product-header");
-const imageBox = document.getElementById("product-image");
-const descBox = document.getElementById("product-description");
-const sellerBox = document.getElementById("seller-info");
+console.log("=== AJAX PRODUCT DETAILS FIXED ===");
 
-const loading = document.getElementById("loading");
-const errorBox = document.getElementById("error");
-const retryBtn = document.getElementById("retry");
-
-function toggleDisplay({ showDetail=false, showLoading=false, showError=false }) {
-  detailBox.classList.toggle("hidden", !showDetail);
-  loading.classList.toggle("hidden", !showLoading);
-  errorBox.classList.toggle("hidden", !showError);
-}
-
-async function fetchProduct() {
-  toggleDisplay({ showLoading: true });
+// --- Get ID (URL path or server fallback) ---
+function getProductId() {
+  // Try URL path (/product/<uuid>/)
+  const pathSegments = window.location.pathname.split('/');
+  const urlId = pathSegments[pathSegments.length - 2];
+  if (urlId && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(urlId)) {
+    return urlId;
+  }
+  // Fallback to server {{ product.id }} (for initial render)
   try {
-    const res = await fetch(ENDPOINT);
-    if (!res.ok) throw new Error("Failed to fetch product details");
-    const product = await res.json();
-    renderProduct(product);
-  } catch (err) {
-    console.error(err);
-    toggleDisplay({ showError: true });
+    return "{{ product.id|default_if_none:'' }}";
+  } catch {
+    return null;
   }
 }
 
-function renderProduct(product) {
-  headerBox.innerHTML = `
+// --- Category Map (Human-readable) ---
+function getCategoryDisplay(code) {
+  const map = {
+    shoes: "Shoes",
+    men_sportwear: "Men Sportwear",
+    women_sportwear: "Women Sportwear",
+    kids_sportwear: "Kids Sportwear",
+    accessories: "Accessories",
+    equipment: "Sports Equipment",
+    bags: "Bags & Backpacks",
+    outerwear: "Jackets & Hoodies",
+  };
+  return map[code] || code || "Uncategorized";
+}
+
+// --- DOM Elements ---
+const detailEl = document.getElementById("productDetail");
+const headerEl = document.getElementById("productHeader");
+const imageEl = document.getElementById("productImage");
+const descEl = document.getElementById("productDescription");
+const sellerEl = document.getElementById("sellerInfo");
+
+const loadingEl = document.getElementById("loading");
+const emptyEl = document.getElementById("empty");
+const errorEl = document.getElementById("error");
+
+// --- State Toggles ---
+function showLoading() {
+  console.log("Showing loading");
+  detailEl.classList.add("hidden");
+  emptyEl.classList.add("hidden");
+  errorEl.classList.add("hidden");
+  loadingEl.classList.remove("hidden");
+}
+
+function showEmpty() {
+  console.log("Showing empty");
+  detailEl.classList.add("hidden");
+  loadingEl.classList.add("hidden");
+  errorEl.classList.add("hidden");
+  emptyEl.classList.remove("hidden");
+}
+
+function showError(errMsg = "Failed to load product") {
+  console.log("Showing error:", errMsg);
+  detailEl.classList.add("hidden");
+  loadingEl.classList.add("hidden");
+  emptyEl.classList.add("hidden");
+  errorEl.classList.remove("hidden");
+  const msgEl = errorEl.querySelector(".error-msg");
+  if (msgEl) msgEl.textContent = errMsg;
+  if (typeof showToast === 'function') showToast("Error", errMsg, "error");
+}
+
+function showDetail() {
+  console.log("Showing detail");
+  loadingEl.classList.add("hidden");
+  emptyEl.classList.add("hidden");
+  errorEl.classList.add("hidden");
+  detailEl.classList.remove("hidden");
+  if (typeof showToast === 'function') showToast("Loaded", "Product details ready", "success");
+}
+
+// --- Render Product (Handles Undefined + Fallbacks) ---
+function renderProduct(data) {
+  console.log("Rendering data:", data);
+
+  // Header with fallback for undefined name
+  const name = data.name || "Unknown Product";
+  const category = getCategoryDisplay(data.category);
+  const isFeatured = data.is_featured || false;
+  const views = data.item_views || 0;
+  const isTrending = views > 20;  // Client-side (works even if backend omits)
+  const dateStr = data.date ? new Date(data.date).toLocaleString() : "Unknown date";
+  const priceStr = Number(data.price || 0).toLocaleString();
+
+  const featuredBadge = isFeatured ? '<span class="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/20 border border-yellow-400/30 text-yellow-200">Featured</span>' : '';
+  const trendingBadge = isTrending ? '<span class="px-3 py-1 rounded-md text-xs font-medium bg-red-500/20 border border-red-400/30 text-red-200">Trending</span>' : '';
+
+  headerEl.innerHTML = `
     <div class="flex flex-wrap items-center gap-2 mb-3">
-      <span class="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-[#3AB09E] text-white">${product.category}</span>
-      ${product.is_featured ? `<span class="px-3 py-1 rounded-md text-xs font-medium bg-yellow-500/20 border border-yellow-400/30 text-yellow-200">Featured</span>` : ""}
-      ${product.is_product_trending ? `<span class="px-3 py-1 rounded-md text-xs font-medium bg-red-500/20 border border-red-400/30 text-red-200">Trending</span>` : ""}
+      <span class="px-3 py-1 rounded-md text-xs font-medium bg-[#3AB09E] text-white">${category}</span>
+      ${featuredBadge}
+      ${trendingBadge}
     </div>
-    <h1 class="text-3xl sm:text-4xl font-bold mb-3">${product.name}</h1>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-3">${name}</h1>  <!-- Fixed: Fallback if undefined -->
     <div class="flex flex-wrap items-center text-sm text-white/70 gap-4">
-      <time>${new Date(product.date).toLocaleString()}</time>
-      <span>${product.item_views} views</span>
-      <span class="font-medium text-[#3AB09E]">Rp ${Number(product.price).toLocaleString()}</span>
+      <time>${dateStr}</time>
+      <span>${views} views</span>
+      <span class="font-medium text-[#3AB09E]">Rp ${priceStr}</span>
     </div>
   `;
 
-  imageBox.innerHTML = product.thumbnail
-    ? `<div class="px-6 sm:px-8"><img src="${product.thumbnail}" alt="${product.name}" class="w-full h-80 lg:h-96 object-cover rounded-lg shadow-md"></div>`
-    : "";
+  // Image (fallback if no thumbnail)
+  imageEl.innerHTML = data.thumbnail ?
+    `<img src="${data.thumbnail}" alt="${name}" class="w-full h-80 lg:h-96 object-cover rounded-lg shadow-md">` :
+    '<div class="text-center py-12 bg-white/5 rounded-lg"><p class="text-white/60">No image available</p></div>';
 
-  descBox.textContent = product.descriptions || "No description available.";
+  // Description (sanitize/fallback)
+  descEl.textContent = data.descriptions || "No description available.";
 
-  sellerBox.innerHTML = `
-    <div class="font-medium">Seller: <span class="text-[#3AB09E]">${product.seller}</span></div>
+  // Seller (use user_name, fallback 'Anonymous')
+  sellerEl.innerHTML = `
+    <div class="font-medium">Seller: <span class="text-[#3AB09E]">${data.user_name || 'Anonymous'}</span></div>
     <p class="text-sm text-white/70">Product Owner</p>
   `;
 
-  toggleDisplay({ showDetail: true });
+  showDetail();
 }
 
-retryBtn.addEventListener("click", fetchProduct);
-fetchProduct();
+// --- Fetch Function ---
+async function fetchProductDetails(id) {
+  console.log("Fetching for ID:", id);
+  showLoading();
+
+  if (!id) {
+    showEmpty();
+    return;
+  }
+
+  try {
+    const response = await fetch(`/json/${id}/`);
+    console.log("Fetch status:", response.status);
+
+    if (response.status === 404) {
+      showEmpty();
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(`Load failed (status ${response.status})`);
+    }
+
+    const product = await response.json();
+    console.log("Fetched product:", product);
+    renderProduct(product);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    showError(err.message);
+  }
+}
+
+// --- Init ---
+const productId = getProductId();
+if (productId) {
+  fetchProductDetails(productId);
+} else {
+  showEmpty();
+}
+
+console.log("=== FIXED PRODUCT DETAILS READY ===");
 </script>
 {% endblock content %}
