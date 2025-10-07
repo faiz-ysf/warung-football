@@ -33,12 +33,6 @@ AJAX memiliki pengaruh sangat besar pada pengalaman pengguna sebuah website. Den
 
 
 
-
-
-
-
-
-
 ---
 
 ## Tugas 5:
