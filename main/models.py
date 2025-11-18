@@ -33,8 +33,8 @@ class Product(models.Model):
         return self.item_views > 20
 
     def increment_views(self):
-        self.item_views += 1
-        self.save()
+        self.item_views = models.F('item_views') + 1
+        self.save(update_fields=['item_views'])
 
     
     

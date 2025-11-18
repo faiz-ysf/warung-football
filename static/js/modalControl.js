@@ -158,6 +158,9 @@ window.addProductEntry = async function () {
   try {
     const res = await fetch("/add_product_entry_ajax/", {
       method: "POST",
+      headers: {
+        "X-CSRFToken": getCsrfToken(),
+      },
       body: new FormData(form),
     });
     if (!res.ok) throw new Error("Failed to add");

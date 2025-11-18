@@ -13,6 +13,10 @@
       <!-- Desktop Section -->
       <div class="hidden md:flex items-center space-x-6 text-white">
         {% if user.is_authenticated %}
+          <!-- Tombol Add Product -->
+          <button id="add-product-btn-desktop" class="bg-[#3AB09E] hover:bg-[#39A78D] text-white px-4 py-2 rounded-md font-medium transition-colors shadow">
+            + Add Product
+          </button>
           <!-- Sapaan User -->
           <div class="text-sm font-medium">
             Welcome, {{ user.get_username }}!
@@ -57,10 +61,10 @@
       {% if user.is_authenticated %}
         <div class="text-white font-medium">Welcome, {{ request.user.username }}!</div>
         <div class="flex flex-col gap-3">
-          <a href="{% url 'main:create_product' %}"
+          <button id="add-product-btn-mobile"
              class="bg-[#3AB09E] hover:bg-[#39A78D] text-white font-medium py-2 px-4 rounded text-center transition-colors">
             + Add Product
-          </a>
+          </button>
           <a href="{% url 'main:logout' %}"
              class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded text-center transition-colors">
             Logout
