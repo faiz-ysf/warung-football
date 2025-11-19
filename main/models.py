@@ -35,7 +35,3 @@ class Product(models.Model):
     def increment_views(self):
         self.item_views = models.F('item_views') + 1
         self.save(update_fields=['item_views'])
-
-    
-    
-
