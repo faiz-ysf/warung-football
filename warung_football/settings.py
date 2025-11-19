@@ -34,7 +34,9 @@ DEBUG = True
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "faiz-yusuf-warungfootball.pbp.cs.ui.ac.id", "10.0.2.2"]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://faiz-yusuf-warungfootball.pbp.cs.ui.ac.id"
+    "https://faiz-yusuf-warungfootball.pbp.cs.ui.ac.id",
+    "http://localhost", # Added for local Flutter development
+    "http://127.0.0.1"  # Added for local Flutter development
 ]
 
 

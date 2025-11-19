@@ -1,5 +1,6 @@
 from datetime import datetime
 import json, requests
+import logging
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -18,6 +19,8 @@ from django.core import serializers
 from django.core.paginator import Paginator
 from .models import Product
 from .forms import ProductForm
+
+logger = logging.getLogger(__name__)
 
 # registration/login function
 
@@ -108,8 +111,11 @@ def proxy_image(request):
         return HttpResponse('No URL provided', status=400)
     
     try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+        }
         # Fetch image from external source
-        response = requests.get(image_url, timeout=10)
+        response = requests.get(image_url, headers=headers, timeout=10)
         response.raise_for_status()
         
         # Return the image with proper content type
@@ -118,7 +124,8 @@ def proxy_image(request):
             content_type=response.headers.get('Content-Type', 'image/jpeg')
         )
     except requests.RequestException as e:
-        return HttpResponse(f'Error fetching image: {str(e)}', status=500)
+        logger.exception(f"Error fetching image from URL: {image_url}")
+        return HttpResponse('Error fetching image. Please try again later.', status=500)
 
 @csrf_exempt
 def create_product_flutter(request):

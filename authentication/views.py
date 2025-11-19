@@ -9,38 +9,66 @@ import json
 
 @csrf_exempt
 def login(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            auth_login(request, user)
-            # Login status successful.
+    if request.method == 'POST':
+        username = None
+        password = None
+        
+        # Try to parse as JSON first
+        try:
+            data = json.loads(request.body)
+            username = data.get('username')
+            password = data.get('password')
+        except json.JSONDecodeError:
+            # If JSON parsing fails, assume form-encoded data
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+        if not all([username, password]):
             return JsonResponse({
-                "username": user.username,
-                "status": True,
-                "message": "Login successful!"
-                # Add other data if you want to send data to Flutter.
-            }, status=200)
+                "status": False,
+                "message": "Missing required fields: username and password."
+            }, status=400)
+    
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                auth_login(request, user)
+                # Login status successful.
+                return JsonResponse({
+                    "username": user.username,
+                    "status": True,
+                    "message": "Login successful!"
+                    # Add other data if you want to send data to Flutter.
+                }, status=200)
+            else:
+                return JsonResponse({
+                    "status": False,
+                    "message": "Login failed, account is disabled."
+                }, status=401)
+
         else:
             return JsonResponse({
                 "status": False,
-                "message": "Login failed, account is disabled."
+                "message": "Login failed, please check your username or password."
             }, status=401)
-
-    else:
-        return JsonResponse({
-            "status": False,
-            "message": "Login failed, please check your username or password."
-        }, status=401)
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
-        data = json.loads(request.body)
-        username = data['username']
-        password1 = data['password1']
-        password2 = data['password2']
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({"status": False, "message": "Invalid JSON payload."}, status=400)
 
+        username = data.get('username')
+        password1 = data.get('password1')
+        password2 = data.get('password2')
+
+        if not all([username, password1, password2]):
+            return JsonResponse({
+                "status": False,
+                "message": "Missing required fields: username, password1, and password2."
+            }, status=400)
+        
         # Check if the passwords match
         if password1 != password2:
             return JsonResponse({
